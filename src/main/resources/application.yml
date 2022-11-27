@@ -1,0 +1,78 @@
+spring:
+  datasource:
+    hikari:
+      schema: "scrapper"
+      maximum-pool-size: 10
+    driver-class-name: org.postgresql.Driver
+    password: "admin"
+    username: "admin"
+    url: "jdbc:postgresql://localhost:5432/real_estate?currentSchema=scrapper"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        generate_statistics: true
+        jdbc:
+          batch_size: 1000
+
+
+application:
+  polygons:
+    districts:
+      -
+        districtName: "Bemowo"
+        fileName: "bemowo.json"
+      -
+        districtName: "Bialołęka"
+        fileName: "bialoleka.json"
+      -
+        districtName: "Bielany"
+        fileName: "bielany.json"
+      -
+        districtName: "Mokotów"
+        fileName: "mokotow.json"
+      -
+        districtName: "Ochota"
+        fileName: "ochota.json"
+      -
+        districtName: "Praga Północ"
+        fileName: "praga-polnoc.json"
+      -
+        districtName: "Praga Południe"
+        fileName: "praga-polodnie.json"
+      -
+        districtName: "Rembertów"
+        fileName: "rembertow.json"
+      -
+        districtName: "Sródmieście"
+        fileName: "srodmiescie.json"
+      -
+        districtName: "Targówek"
+        fileName: "targowek.json"
+      -
+        districtName: "Ursus"
+        fileName: "ursus.json"
+      -
+        districtName: "Ursynów"
+        fileName: "ursynow.json"
+      -
+        districtName: "Wawer"
+        fileName: "wawer.json"
+      -
+        districtName: "Wesoła"
+        fileName: "wesola.json"
+      -
+        districtName: "Wilanów"
+        fileName: "wilanow.json"
+      -
+        districtName: "Włochy"
+        fileName: "wlochy.json"
+      -
+        districtName: "Wola"
+        fileName: "wola.json"
+      -
+        districtName: "Żoliboż"
+        fileName: "zoliboz.json"
