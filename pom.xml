@@ -92,6 +92,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
 
 
 
@@ -103,6 +107,29 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <app.config.file>application-local.yml</app.config.file>
+                <db.url>${spring.datasource.url}</db.url>
+                <db.username>${spring.datasource.username}</db.username>
+                <db.password>${spring.datasource.password}</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <app.config.file>application.yml</app.config.file>
+                <db.url>${env.SPRING_DATASOURCE_URL}</db.url>
+                <db.username>${env.SPRING_DATASOURCE_USERNAME}</db.username>
+                <db.password>${env.SPRING_DATASOURCE_PASSWORD}</db.password>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
@@ -130,6 +157,100 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>it.ozimov</groupId>
+                <artifactId>yaml-properties-maven-plugin</artifactId>
+                <version>1.1.3</version>
+                <executions>
+                    <!-- Associate the read-project-properties goal with the initialize phase, to read the properties file. -->
+                    <execution>
+
+                        <!-- Apart from this test, the phase must be initialize -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+
+                            <files>
+                                <!--								<file>dev.properties</file>-->
+                                <file>${project.basedir}/src/main/resources/${app.config.file}</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!--								<echo>Displaying value of properties</echo>-->
+                                <!--								<echo>[foo] ${spring.datasource.username}</echo>-->
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-postgre</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!--Insert your DB configuration-->
+                            <jdbc>
+                                <driver>org.postgresql.Driver</driver>
+                                <url>${db.url}</url>
+                                <user>${db.username}</user>
+                                <password>${db.password}</password>
+                                <!--								<driver>org.postgresql.Driver</driver>-->
+                                <!--								<url>jdbc:postgresql://localhost:5432/postgres?currentSchema=insight</url>-->
+                                <!--								<user>postgres</user>-->
+                                <!--								<password>admin</password>-->
+                            </jdbc>
+                            <generator>
+                                <database>
+                                    <name>
+                                        org.jooq.meta.postgres.PostgresDatabase
+                                    </name>
+                                    <includes>.*</includes>
+                                    <excludes></excludes>
+                                    <inputSchema>scrapper</inputSchema>
+                                </database>
+                                <generate>
+                                    <pojos>true</pojos>
+                                    <pojosEqualsAndHashCode>
+                                        true
+                                    </pojosEqualsAndHashCode>
+                                    <javaTimeTypes>true</javaTimeTypes>
+                                    <fluentSetters>true</fluentSetters>
+                                </generate>
+                                <target>
+                                    <packageName>
+                                        jooq
+                                    </packageName>
+                                    <directory>
+                                        target/generated-sources/jooq
+                                    </directory>
+                                </target>
+                            </generator>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>

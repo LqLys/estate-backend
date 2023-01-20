@@ -1,5 +1,6 @@
 package com.example.realestate.domain.advertisement
 
+import com.example.realestate.domain.IdEntity
 import org.hibernate.annotations.GenericGenerator
 import java.math.BigDecimal
 import java.util.*
@@ -8,15 +9,15 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "ADVERTISEMENT")
-class Advertisement {
+class Advertisement : IdEntity{
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator",
-    )
-    val id: UUID? = null
+//    @Id
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//        name = "UUID",
+//        strategy = "org.hibernate.id.UUIDGenerator",
+//    )
+//    var id: UUID? = null
 
     @Column(name = "URL", nullable = false, unique = true)
     var url: String? = null
@@ -45,6 +46,12 @@ class Advertisement {
     @Column(name = "AD_NAME")
     var adName: String? = null
 
+    @Column(name = "DISTANCE_TO_METRO", precision = 18, scale = 15)
+    var distanceToMetro: Int? = null
+
+    @Column(name = "STATUS")
+    var status: String? = null
+
 
 
 
@@ -59,7 +66,8 @@ class Advertisement {
         longitude: BigDecimal?,
         district: String?,
         dataSource: String?,
-        adName: String?
+        adName: String?,
+        distanceToMetro: Int?
     ) {
         this.url = url
         this.price = price
@@ -70,6 +78,7 @@ class Advertisement {
         this.district = district
         this.dataSource = dataSource
         this.adName = adName
+        this.distanceToMetro = distanceToMetro
     }
 
 
