@@ -67,7 +67,8 @@ class Advertisement : IdEntity{
         district: String?,
         dataSource: String?,
         adName: String?,
-        distanceToMetro: Int?
+        distanceToMetro: Int?,
+        status: String?
     ) {
         this.url = url
         this.price = price
@@ -79,6 +80,7 @@ class Advertisement : IdEntity{
         this.dataSource = dataSource
         this.adName = adName
         this.distanceToMetro = distanceToMetro
+        this.status = status
     }
 
 

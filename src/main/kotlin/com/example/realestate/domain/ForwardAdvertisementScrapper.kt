@@ -81,7 +81,7 @@ class ForwardAdvertisementScrapper(
     private fun sleep() {
         val randomTime = ThreadLocalRandom.current().nextInt(0, 5000 + 1)
         try {
-            Thread.sleep((5000 + randomTime).toLong())
+            Thread.sleep((0 + randomTime).toLong())
         } catch (e: InterruptedException) {
             log.error("Error sleeping")
             e.printStackTrace()

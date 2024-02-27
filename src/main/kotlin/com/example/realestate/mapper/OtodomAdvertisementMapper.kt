@@ -41,7 +41,8 @@ class OtodomAdvertisementMapper(
             district,
             "OTODOM",
             advertisementData.getTitle(),
-            distanceToMetro
+            distanceToMetro,
+            "NEW"
         )
     }
 

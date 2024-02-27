@@ -19,6 +19,11 @@ class TestController(
     private val pointOfInterestRepository: PointOfInterestRepository
 ) {
 
+    @GetMapping(path = ["/polo.jpg"])
+    fun jpg(){
+        println("aaaa")
+    }
+
 
     @GetMapping
     fun test() {

@@ -3,11 +3,9 @@ package com.example.realestate.endpoint.advertisement
 import com.example.realestate.domain.DistrictFinder
 import com.example.realestate.domain.advertisement.Advertisement
 import com.example.realestate.domain.advertisement.repository.AdvertisementRepository
+import com.example.realestate.endpoint.advertisement.request.SetAdvertisementStatusRequest
 import com.example.realestate.endpoint.advertisement.response.PricePerMeterRangeResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 @RestController
@@ -35,7 +33,8 @@ class AdvertisementController(
         @RequestParam(value = "ppm") ppm: BigDecimal,
         @RequestParam(value = "dtm") dtm: Int
     ): List<Advertisement> {
-        return advertisementRepository.findAllByDistrictInAndPriceLessThanAndPricePerMeterLessThanAndDistanceToMetroLessThan(district, price, ppm, dtm);
+        return advertisementRepository
+            .findAllByDistrictInAndPriceLessThanAndPricePerMeterLessThanAndDistanceToMetroLessThanAndStatusNot(district, price, ppm, dtm, "HIDDEN");
     }
 
     @GetMapping(path = ["/ppm-range"])
@@ -55,6 +54,15 @@ class AdvertisementController(
             ?.pricePerMeter ?: BigDecimal.ZERO;
 
         return PricePerMeterRangeResponse(minPrice, maxPrice)
+    }
+
+    @PatchMapping(path = ["/status"])
+    fun setAdvertisementStatus(@RequestBody request: SetAdvertisementStatusRequest){
+        val adv = advertisementRepository.findByUrl(request.advUrl)
+        adv?.let {
+            it.status = request.advStatus
+            advertisementRepository.save(it)
+        }
     }
 
 }

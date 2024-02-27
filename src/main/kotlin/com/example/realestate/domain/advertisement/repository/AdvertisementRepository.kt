@@ -7,7 +7,9 @@ import java.util.*
 
 interface AdvertisementRepository : JpaRepository<Advertisement,  UUID>, AdvertismentRepositoryFragment{
     fun findByUrl(url: String): Advertisement?
-    fun findAllByDistrictInAndPriceLessThanAndPricePerMeterLessThanAndDistanceToMetroLessThan(district: Set<String>, price: BigDecimal, ppm: BigDecimal, dtm: Int): List<Advertisement>
+    fun findAllByDistrictInAndPriceLessThanAndPricePerMeterLessThanAndDistanceToMetroLessThanAndStatusNot(
+        district: Set<String>, price: BigDecimal, ppm: BigDecimal, dtm: Int, status: String
+    ): List<Advertisement>
     fun findTopByPricePerMeterBetweenOrderByPricePerMeterAsc(min: BigDecimal, max: BigDecimal): Advertisement?;
     fun findTopByPricePerMeterBetweenOrderByPricePerMeterDesc(min: BigDecimal, max: BigDecimal): Advertisement?;
 }

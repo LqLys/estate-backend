@@ -30,7 +30,8 @@ class AdvertisementRepositoryImpl(private val dslContext: DSLContext) : Advertis
             advRecord.DISTRICT,
             advRecord.DATA_SOURCE,
             advRecord.AD_NAME,
-            advRecord.DISTANCE_TO_METRO
+            advRecord.DISTANCE_TO_METRO,
+            advRecord.STATUS
         ).values(advertisement.id,
             advertisement.url,
             advertisement.price,
@@ -41,7 +42,8 @@ class AdvertisementRepositoryImpl(private val dslContext: DSLContext) : Advertis
             advertisement.district,
             advertisement.dataSource,
             advertisement.adName,
-            advertisement.distanceToMetro
+            advertisement.distanceToMetro,
+            advertisement.status
         )
             .onConflict(advRecord.URL)
             .doUpdate()
